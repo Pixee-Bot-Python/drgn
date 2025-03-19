@@ -13,6 +13,7 @@ import sysconfig
 import tempfile
 
 import yaml
+from security import safe_command
 
 BUILD_BASE = "build/compile_commands"
 CDB = BUILD_BASE + "/compile_commands.json"
@@ -175,8 +176,7 @@ def main():
         ):
             continue
 
-        with subprocess.Popen(
-            ["include-what-you-use"]
+        with safe_command.run(subprocess.Popen, ["include-what-you-use"]
             + command["arguments"][1:]
             + [
                 "-Xiwyu",

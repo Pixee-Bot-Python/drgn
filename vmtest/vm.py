@@ -20,6 +20,7 @@ from vmtest.download import (
     download,
     download_kernel_argparse_type,
 )
+from security import safe_command
 
 # Script run as init in the virtual machine.
 _INIT_TEMPLATE = r"""#!/bin/sh
@@ -288,8 +289,7 @@ def run_in_vm(
 
         signal.signal(signal.SIGTERM, lambda *_: sys.exit(1))
 
-        proc = subprocess.Popen(
-            [
+        proc = safe_command.run(subprocess.Popen, [
                 # fmt: off
                 *unshare_args,
 

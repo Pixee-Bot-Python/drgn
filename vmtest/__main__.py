@@ -27,6 +27,7 @@ from vmtest.download import (
 from vmtest.kmod import build_kmod
 from vmtest.rootfsbuild import build_drgn_in_rootfs
 from vmtest.vm import LostVMError, run_in_vm
+from security import safe_command
 
 logger = logging.getLogger(__name__)
 
@@ -256,8 +257,7 @@ if __name__ == "__main__":
                 )
                 if args.local:
                     logger.info("running local tests on %s", arch.name)
-                    status = subprocess.call(
-                        [
+                    status = safe_command.run(subprocess.call, [
                             sys.executable,
                             "-m",
                             "pytest",
